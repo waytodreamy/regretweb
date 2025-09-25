@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>regret — Commands</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="https://cdn.discordapp.com/avatars/1406310454581526549/d89b769041e7be9e432616a28c0e5472.png?size=1024" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    function toggleMenu() {
+      document.getElementById("mobile-menu").classList.toggle("hidden");
+    }
+  </script>
+</head>
+<body class="bg-gradient-to-b from-black via-gray-900 to-black text-white min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="flex justify-between items-center px-6 py-4 bg-black/50 backdrop-blur sticky top-0 z-30">
+    <div class="flex items-center gap-2">
+      <img src="https://cdn.discordapp.com/avatars/1406310454581526549/d89b769041e7be9e432616a28c0e5472.png?size=1024" alt="Bot Logo" class="rounded-lg w-9 h-9">
+      <span class="text-lg md:text-xl font-bold">regret</span>
+    </div>
+
+    <!-- Desktop Menu -->
+    <div class="hidden md:flex gap-6 text-gray-300">
+      <a href="/" class="hover:text-white">Home</a>
+      <a href="/commands" class="hover:text-white font-semibold">Commands</a>
+      <a href="#" class="hover:text-white">Embed</a>
+      <a href="#" class="hover:text-white">FAQ</a>
+      <a href="#" class="hover:text-white">Status</a>
+    </div>
+
+    <a href="https://discord.gg/2HSXCgRs7H" target="_blank" class="hidden md:inline bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-xl">
+      Support
+    </a>
+
+    <!-- Hamburger Button (Mobile) -->
+    <button class="md:hidden text-white" onclick="toggleMenu()">☰</button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden flex flex-col bg-black/90 text-white p-4 space-y-4 md:hidden">
+    <a href="/" class="hover:text-gray-400">Home</a>
+    <a href="/commands" class="hover:text-gray-400 font-semibold">Commands</a>
+    <a href="#" class="hover:text-gray-400">Embed</a>
+    <a href="#" class="hover:text-gray-400">FAQ</a>
+    <a href="#" class="hover:text-gray-400">Status</a>
+    <a href="https://discord.gg/2HSXCgRs7H" target="_blank" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-xl text-center">
+      Support
+    </a>
+  </div>
+
+  <!-- Commands Section -->
+  <section class="px-6 mt-16 max-w-7xl mx-auto">
+    <h1 class="text-4xl md:text-5xl font-extrabold mb-4 text-center">
+      <span class="text-gray-300">Bot Commands</span>
+    </h1>
+
+    <!-- Controls: Search + Category Tabs -->
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
+      <div class="w-full md:w-1/2">
+        <label for="command-search" class="sr-only">Search commands</label>
+        <input id="command-search" type="search" placeholder="Search commands (name or description)…"
+               class="w-full bg-gray-800/60 placeholder-gray-400 text-white px-4 py-3 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-500"
+        />
+      </div>
+
+      <div class="w-full md:w-1/2 flex gap-2 flex-wrap">
+        <button class="tab-btn bg-white text-black px-3 py-2 rounded-full text-sm font-medium" data-cat="All">All</button>
+        <button class="tab-btn bg-gray-800/70 hover:bg-gray-700 px-3 py-2 rounded-full text-sm font-medium" data-cat="Utility">⚡ Utility</button>
+        <button class="tab-btn bg-gray-800/70 hover:bg-gray-700 px-3 py-2 rounded-full text-sm font-medium" data-cat="Fun">🎮 Fun</button>
+        <button class="tab-btn bg-gray-800/70 hover:bg-gray-700 px-3 py-2 rounded-full text-sm font-medium" data-cat="Economy">💰 Economy</button>
+        <button class="tab-btn bg-gray-800/70 hover:bg-gray-700 px-3 py-2 rounded-full text-sm font-medium" data-cat="Moderation">🛠️ Moderation</button>
+		<button class="tab-btn bg-gray-800/70 hover:bg-gray-700 px-3 py-2 rounded-full text-sm font-medium" data-cat="Tickets">🎫 Tickets</button>
+		<button class="tab-btn bg-gray-800/70 hover:bg-gray-700 px-3 py-2 rounded-full text-sm font-medium" data-cat="Config">⚙️ Configuration</button>
+      </div>
+    </div>
+
+    <!-- Grid: one card per command -->
+    <div id="cards-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <!-- Each card has data attributes to make filtering easy -->
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Utility" data-command=";help" data-desc="Show all commands">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-gray-400">⚡ Utility</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;help</code>
+        <p class="text-gray-300 mt-2 text-sm">Show all commands</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Utility" data-command=";ping" data-desc="Check bot latency">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-gray-400">⚡ Utility</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;ping</code>
+        <p class="text-gray-300 mt-2 text-sm">Check bot latency</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Utility" data-command=";avatar" data-desc="Shows the user's avatar">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-gray-400">⚡ Utility</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;avatar</code>
+        <p class="text-gray-300 mt-2 text-sm">Shows the user's avatar</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Utility" data-command=";botinfo" data-desc="Show information about the bot">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-gray-400">⚡ Utility</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;botinfo</code>
+        <p class="text-gray-300 mt-2 text-sm">Show information about the bot</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Utility" data-command=";uptime" data-desc="Check bot's uptime">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-gray-400">⚡ Utility</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;uptime</code>
+        <p class="text-gray-300 mt-2 text-sm">Check bot's uptime</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Utility" data-command=";remind" data-desc="Set a reminder">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-gray-400">⚡ Utility</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;remind</code>
+        <p class="text-gray-300 mt-2 text-sm">Set a reminder</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Utility" data-command=";membercount" data-desc="Show the server's membercount">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-gray-400">⚡ Utility</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;membercount</code>
+        <p class="text-gray-300 mt-2 text-sm">Show the server's membercount</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Utility" data-command=";roles" data-desc="Show all the roles in the server">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-gray-400">⚡ Utility</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;roles</code>
+        <p class="text-gray-300 mt-2 text-sm">Show all the roles in the server</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Utility" data-command=";spotify" data-desc="Show what you're listening to on Spotify">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-gray-400">⚡ Utility</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;spotify</code>
+        <p class="text-gray-300 mt-2 text-sm">Show what you're listening to on Spotify</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Utility" data-command=";calculate" data-desc="Calculate a math problem">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-gray-400">⚡ Utility</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;calculate</code>
+        <p class="text-gray-300 mt-2 text-sm">Calculate a math problem</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Utility" data-command=";serverinfo" data-desc="Show information about the server">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-gray-400">⚡ Utility</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;serverinfo</code>
+        <p class="text-gray-300 mt-2 text-sm">Show information about the server</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Utility" data-command=";snipe" data-desc="Show recently deleted messages">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-gray-400">⚡ Utility</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;snipe</code>
+        <p class="text-gray-300 mt-2 text-sm">Show recently deleted messages</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Utility" data-command=";editsnipe" data-desc="Show recently edited messages">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-gray-400">⚡ Utility</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;editsnipe</code>
+        <p class="text-gray-300 mt-2 text-sm">Show recently edited messages</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Utility" data-command=";reactsnipe" data-desc="Show recently reacted messages">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-gray-400">⚡ Utility</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;reactsnipe</code>
+        <p class="text-gray-300 mt-2 text-sm">Show recently reacted messages</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Utility" data-command=";banner" data-desc="Show a user's banner">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-gray-400">⚡ Utility</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;banner</code>
+        <p class="text-gray-300 mt-2 text-sm">Show a user's banner</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Utility" data-command=";donate" data-desc="Donate to help the bot stay online">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-gray-400">⚡ Utility</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;donate</code>
+        <p class="text-gray-300 mt-2 text-sm">Donate to help the bot stay online</p>
+      </div>
+
+      <!-- Fun -->
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Fun" data-command=";hug" data-desc="Hug a member">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-yellow-300">🎮 Fun</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;hug</code>
+        <p class="text-gray-300 mt-2 text-sm">Hug a member</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Fun" data-command=";kiss" data-desc="Kiss a member">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-yellow-300">🎮 Fun</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;kiss</code>
+        <p class="text-gray-300 mt-2 text-sm">Kiss a member</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Fun" data-command=";timezone" data-desc="Show your time">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-yellow-300">🎮 Fun</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;timezone</code>
+        <p class="text-gray-300 mt-2 text-sm">Show your time</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Fun" data-command=";crypto" data-desc="See the current price of a crypto coin">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-yellow-300">🎮 Fun</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;crypto</code>
+        <p class="text-gray-300 mt-2 text-sm">See the current price of a crypto coin</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Fun" data-command=";gas" data-desc="See the current gas prices">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-yellow-300">🎮 Fun</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;gas</code>
+        <p class="text-gray-300 mt-2 text-sm">See the current gas price</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Fun" data-command=";transaction" data-desc="See a crypto blockchain transaction">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-yellow-300">🎮 Fun</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;transaction</code>
+        <p class="text-gray-300 mt-2 text-sm">See a crypto blockchain transaction</p>
+      </div>
+
+      <!-- Economy -->
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Economy" data-command=";balance" data-desc="Check balance">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-emerald-300">💰 Economy</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;balance</code>
+        <p class="text-gray-300 mt-2 text-sm">Check balance</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Economy" data-command=";daily" data-desc="Claim daily reward">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-emerald-300">💰 Economy</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;daily</code>
+        <p class="text-gray-300 mt-2 text-sm">Claim daily reward</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Economy" data-command=";work" data-desc="Work to earn coins">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-emerald-300">💰 Economy</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;work</code>
+        <p class="text-gray-300 mt-2 text-sm">Work to earn coins</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Economy" data-command=";give" data-desc="Give a user some coins">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-emerald-300">💰 Economy</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;give</code>
+        <p class="text-gray-300 mt-2 text-sm">Give a user some coins</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Economy" data-command=";gamble" data-desc="Gamble away your life savings">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-emerald-300">💰 Economy</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;gamble</code>
+        <p class="text-gray-300 mt-2 text-sm">Gamble away your life savings</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Economy" data-command=";slots" data-desc="Try your luck on the slots">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-emerald-300">💰 Economy</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;slots</code>
+        <p class="text-gray-300 mt-2 text-sm">Try your luck on the slots</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Economy" data-command=";leaderboard" data-desc="Shows the global leaderboard">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-emerald-300">💰 Economy</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;leaderboard</code>
+        <p class="text-gray-300 mt-2 text-sm">Shows the global leaderboard</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Economy" data-command=";beg" data-desc="Beg to earn coins">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-emerald-300">💰 Economy</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;beg</code>
+        <p class="text-gray-300 mt-2 text-sm">Beg to earn coins</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Economy" data-command=";rob" data-desc="Rob someone for a chance to win (or get fined)">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-emerald-300">💰 Economy</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;rob</code>
+        <p class="text-gray-300 mt-2 text-sm">Rob someone for a chance to win (or get fined)</p>
+      </div>
+
+      <!-- Moderation -->
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Moderation" data-command=";ban" data-desc="Ban a user">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-rose-300">🛠️ Moderation</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;ban</code>
+        <p class="text-gray-300 mt-2 text-sm">Ban a user</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Moderation" data-command=";slowmode" data-desc="Toggle channel slowmode">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-rose-300">🛠️ Moderation</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;slowmode</code>
+        <p class="text-gray-300 mt-2 text-sm">Toggle channel slowmode</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Moderation" data-command=";unlock" data-desc="Unlock channel">
+        <div class="flex items-center justify-between mb-2">
+              <span class="text-xs uppercase tracking-wide text-rose-300">🛠️ Moderation</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;unlock</code>
+        <p class="text-gray-300 mt-2 text-sm">Unlock channel</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Moderation" data-command=";lock" data-desc="Lock channel">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-rose-300">🛠️ Moderation</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;lock</code>
+        <p class="text-gray-300 mt-2 text-sm">Lock channel</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Moderation" data-command=";kick" data-desc="Kick a user">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-rose-300">🛠️ Moderation</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;kick</code>
+        <p class="text-gray-300 mt-2 text-sm">Kick a user</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Moderation" data-command=";mute" data-desc="Mute a user">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-rose-300">🛠️ Moderation</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;mute</code>
+        <p class="text-gray-300 mt-2 text-sm">Mute a user</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Moderation" data-command=";logging" data-desc="Setup the logging module">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-rose-300">🛠️ Moderation</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;logging</code>
+        <p class="text-gray-300 mt-2 text-sm">Setup the logging module</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Moderation" data-command=";purge" data-desc="Clear the chat">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-rose-300">🛠️ Moderation</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;purge</code>
+        <p class="text-gray-300 mt-2 text-sm">Clear the chat</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Moderation" data-command=";steal" data-desc="Clone an emoji">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-rose-300">🛠️ Moderation</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;steal</code>
+        <p class="text-gray-300 mt-2 text-sm">Clone an emoji</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Moderation" data-command=";botclear" data-desc="Clears bot messages with their invokers">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-rose-300">🛠️ Moderation</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;botclear</code>
+        <p class="text-gray-300 mt-2 text-sm">Clears bot messages with their invokers</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Moderation" data-command=";nuke" data-desc="Replicates the channel and deletes the old one">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-rose-300">🛠️ Moderation</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;nuke</code>
+        <p class="text-gray-300 mt-2 text-sm">Replicates the channel and deletes the old one</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Moderation" data-command=";role" data-desc="Assign a role to a user">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-rose-300">🛠️ Moderation</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;role</code>
+        <p class="text-gray-300 mt-2 text-sm">Assign a role to a user</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Moderation" data-command=";softban" data-desc="Ban then unban a user">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-rose-300">🛠️ Moderation</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;softban</code>
+        <p class="text-gray-300 mt-2 text-sm">Ban then unban a user</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Moderation" data-command=";clearsnipe" data-desc="Clears the snipes in the channel">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-rose-300">🛠️ Moderation</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;clearsnipe</code>
+        <p class="text-gray-300 mt-2 text-sm">Clears the snipes in the channel</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Moderation" data-command=";hardban" data-desc="Ban a user who isn't in the server">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-rose-300">🛠️ Moderation</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;hardban</code>
+        <p class="text-gray-300 mt-2 text-sm">Ban a user who isn't in the server</p>
+      </div>
+	  
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Tickets" data-command=";tickets" data-desc="Setup the tickets module">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-rose-300">🎫 Tickets</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;tickets</code>
+        <p class="text-gray-300 mt-2 text-sm">Setup the tickets module</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Tickets" data-command=";close" data-desc="Closes your open ticket">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-rose-300">🎫 Tickets</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;close</code>
+        <p class="text-gray-300 mt-2 text-sm">Closes your open ticket</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Tickets" data-command=";delete" data-desc="Delete your open ticket">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-rose-300">🎫 Tickets</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;delete</code>
+        <p class="text-gray-300 mt-2 text-sm">Delete your open ticket</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Tickets" data-command=";remove" data-desc="Remove a user from a ticket">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-rose-300">🎫 Tickets</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;remove</code>
+        <p class="text-gray-300 mt-2 text-sm">Remove a user from a ticket</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Tickets" data-command=";add" data-desc="Add a user to a ticket">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-rose-300">🎫 Tickets</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;add</code>
+        <p class="text-gray-300 mt-2 text-sm">Add a user to a ticket</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Config" data-command=";autoresponder" data-desc="Setup a autoresponder in the server">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-rose-300">⚙️ Configuration</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;autoresponder</code>
+        <p class="text-gray-300 mt-2 text-sm">Setup a autoresponder in the server</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Config" data-command=";autorole" data-desc="Setup a autorole in the server">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-rose-300">⚙️ Configuration</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;autorole</code>
+        <p class="text-gray-300 mt-2 text-sm">Setup a autorole in the server</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Config" data-command=";voicemaster" data-desc="Setup the voicemaster in the server">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-rose-300">⚙️ Configuration</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;voicemaster</code>
+        <p class="text-gray-300 mt-2 text-sm">Setup the voicemaster in the server</p>
+      </div>
+
+      <div class="card bg-black/40 rounded-2xl p-4 shadow-lg hover:bg-black/60 transition"
+           data-category="Config" data-command=";automod" data-desc="Setup automod in the server">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs uppercase tracking-wide text-rose-300">⚙️ Configuration</span>
+        </div>
+        <code class="block bg-gray-800 px-3 py-2 rounded text-sm font-medium">;automod</code>
+        <p class="text-gray-300 mt-2 text-sm">Setup automod in the server</p>
+      </div>
+
+    </div>
+
+    <!-- No results message -->
+    <div id="no-results" class="hidden mt-8 text-center text-gray-400">
+      No commands match your search / filter.
+    </div>
+  </section>
+
+  <script>
+    // Basic client-side filtering (category tabs + search)
+    (function () {
+      const searchInput = document.getElementById('command-search');
+      const tabButtons = Array.from(document.querySelectorAll('.tab-btn'));
+      const cards = Array.from(document.querySelectorAll('.card'));
+      const noResults = document.getElementById('no-results');
+
+      let activeCategory = 'All';
+
+      function setActiveTab(catBtn) {
+        tabButtons.forEach(b => {
+          if (b === catBtn) {
+            b.classList.remove('bg-gray-800/70');
+            b.classList.add('bg-white', 'text-black');
+          } else {
+            b.classList.remove('bg-white', 'text-black');
+            b.classList.add('bg-gray-800/70');
+          }
+        });
+      }
+
+      function filterCards() {
+        const term = (searchInput.value || '').trim().toLowerCase();
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+          const cat = card.dataset.category || '';
+          const cmd = (card.dataset.command || '').toLowerCase();
+          const desc = (card.dataset.desc || '').toLowerCase();
+
+          const matchesCategory = (activeCategory === 'All') || (cat === activeCategory);
+          const matchesSearch = term === '' || cmd.includes(term) || desc.includes(term);
+
+          if (matchesCategory && matchesSearch) {
+            card.classList.remove('hidden');
+            visibleCount++;
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+
+        noResults.classList.toggle('hidden', visibleCount > 0);
+      }
+
+      // Events: tabs
+      tabButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          activeCategory = btn.dataset.cat || 'All';
+          setActiveTab(btn);
+          filterCards();
+        });
+      });
+
+      // Events: search (live)
+      searchInput.addEventListener('input', () => {
+        filterCards();
+      });
+
+      // init
+      // mark first button (All) active
+      const defaultBtn = tabButtons.find(b => b.dataset.cat === 'All') || tabButtons[0];
+      if (defaultBtn) setActiveTab(defaultBtn);
+      filterCards();
+    })();
+  </script>
+
+</body>
+</html>
