@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>regret</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="https://cdn.discordapp.com/avatars/1406310454581526549/d89b769041e7be9e432616a28c0e5472.png?size=1024" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* Cursor blink */
+    .cursor {
+      display: inline-block;
+      width: 1ch;
+      color: #9ca3af;
+      animation: blink 0.8s infinite;
+    }
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
+    /* Fade in effect */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Card hover lift */
+    .card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-b from-black via-gray-900 to-black text-white min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="flex justify-between items-center px-6 py-4 bg-black/50 backdrop-blur sticky top-0">
+    <div class="flex items-center gap-2">
+      <img src="https://cdn.discordapp.com/avatars/1406310454581526549/d89b769041e7be9e432616a28c0e5472.png?size=1024" alt="Bot Logo" class="rounded-lg w-9 h-9">
+      <span class="text-lg md:text-xl font-bold">regret</span>
+    </div>
+
+    <!-- Desktop Menu -->
+    <div class="hidden md:flex gap-6 text-gray-300">
+      <a href="#" class="hover:text-white flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7m-9 2v10" />
+        </svg>
+        Home
+      </a>
+      <a href="/commands" class="hover:text-white flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6h6v6m2 0h2a2 2 0 002-2V7a2 2 0 00-2-2h-2M7 17H5a2 2 0 01-2-2V7a2 2 0 012-2h2" />
+        </svg>
+        Commands
+      </a>
+      <a href="/embed" class="hover:text-white flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16h16M4 12h16M4 8h16" />
+        </svg>
+        Embed
+      </a>
+      <a href="/faq" class="hover:text-white flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 14h.01M16 10h.01M21 12c0 4.418-3.582 8-8 8s-8-3.582-8-8 3.582-8 8-8 8 3.582 8 8z" />
+        </svg>
+        FAQ
+      </a>
+      <a href="/status" class="hover:text-white flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Status
+      </a>
+    </div>
+
+    <a href="https://discord.gg/2HSXCgRs7H" target="_blank" class="hidden md:inline bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-xl">
+      Support
+    </a>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="px-6 mt-16 flex flex-col md:flex-row justify-between items-center text-center md:text-left fade-in">
+    <div class="max-w-lg">
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
+        <span class="text-gray-300">regret</span><br>
+        <span class="text-white font-medium">your companion for daily use</span>
+      </h1>
+      <p id="typewriter" class="text-gray-400 text-base md:text-lg mb-6"></p>
+      <div class="flex flex-col md:flex-row gap-3 md:gap-4 justify-center md:justify-start">
+        <a href="https://paypal.me/midzesty" target="_blank" class="bg-gray-700 hover:bg-gray-600 px-5 py-2 rounded-xl font-medium">💰 Donate</a>
+        <a href="https://discord.com/oauth2/authorize?client_id=1406310454581526549" target="_blank" class="bg-indigo-600 hover:bg-indigo-500 px-5 py-2 rounded-xl font-medium">📩 Invite</a>
+      </div>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="grid grid-cols-2 gap-4 mt-12 md:mt-0">
+      <div class="card bg-black/40 rounded-2xl px-6 py-4 flex items-center gap-3 fade-in">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6h13v13H9zM5 3h4v4H5V3z" />
+        </svg>
+        <span>Gaming Features</span>
+      </div>
+      <div class="card bg-black/40 rounded-2xl px-6 py-4 flex items-center gap-3 fade-in">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2h5m7-10a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        <span>Community Tools</span>
+      </div>
+      <div class="card bg-black/40 rounded-2xl px-6 py-4 flex items-center gap-3 fade-in">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        <span>Custom Themes</span>
+      </div>
+      <div class="card bg-black/40 rounded-2xl px-6 py-4 flex items-center gap-3 fade-in">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>Auto Responses</span>
+      </div>
+      <div class="card bg-black/40 rounded-2xl px-6 py-4 flex items-center gap-3 fade-in">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zM12 14l6.16-3.422M12 14l-6.16-3.422M12 14v7" />
+        </svg>
+        <span>Welcome System</span>
+      </div>
+      <div class="card bg-black/40 rounded-2xl px-6 py-4 flex items-center gap-3 fade-in">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.95a1 1 0 00.95.69h4.15c.969 0 1.371 1.24.588 1.81l-3.36 2.44a1 1 0 00-.364 1.118l1.287 3.95c.3.921-.755 1.688-1.54 1.118l-3.36-2.44a1 1 0 00-1.175 0l-3.36 2.44c-.784.57-1.838-.197-1.539-1.118l1.286-3.95a1 1 0 00-.364-1.118L2.075 9.377c-.783-.57-.38-1.81.588-1.81h4.15a1 1 0 00.95-.69l1.286-3.95z" />
+        </svg>
+        <span>Starboard</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Typewriter Script -->
+  <script>
+    const text = "The ultimate Discord bot with advanced features and beautiful aesthetics.";
+    let i = 0;
+    let deleting = false;
+    const speed = 60;
+    const pause = 1500;
+
+    function typeWriter() {
+      const element = document.getElementById("typewriter");
+
+      if (!deleting && i < text.length) {
+        element.innerHTML = text.substring(0, i + 1) + '<span class="cursor">|</span>';
+        i++;
+        setTimeout(typeWriter, speed);
+      } else if (!deleting && i === text.length) {
+        element.innerHTML = text + '<span class="cursor">|</span>';
+        deleting = true;
+        setTimeout(typeWriter, pause);
+      } else if (deleting && i > 0) {
+        element.innerHTML = text.substring(0, i - 1) + '<span class="cursor">|</span>';
+        i--;
+        setTimeout(typeWriter, speed);
+      } else if (deleting && i === 0) {
+        element.innerHTML = '<span class="cursor">|</span>';
+        deleting = false;
+        setTimeout(typeWriter, pause);
+      }
+    }
+    window.onload = typeWriter;
+
+    // Fade in on scroll
+    const faders = document.querySelectorAll('.fade-in');
+    const appearOnScroll = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    faders.forEach(fader => {
+      appearOnScroll.observe(fader);
+    });
+  </script>
+
+</body>
+</html>
