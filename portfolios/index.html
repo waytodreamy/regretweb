@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Portfolio Selection" />
+  <title>Portfolio Selection</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #000000;
+      color: #ffffff;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Animated background grid */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: gridMove 20s linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes gridMove {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
+
+    /* Floating orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.15;
+      animation: float 15s infinite ease-in-out;
+      z-index: 0;
+    }
+
+    .orb1 {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.5), transparent);
+      top: -200px;
+      left: -200px;
+      animation-delay: 0s;
+    }
+
+    .orb2 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+      bottom: -100px;
+      right: -100px;
+      animation-delay: 5s;
+    }
+
+    .orb3 {
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.4), transparent);
+      top: 50%;
+      left: 50%;
+      animation-delay: 10s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -30px) scale(1.1); }
+      66% { transform: translate(-30px, 30px) scale(0.9); }
+    }
+
+    /* Content container */
+    .container {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 600px;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      margin-bottom: 60px;
+      color: #ffffff;
+      text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+      letter-spacing: 2px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      font-weight: 400;
+      margin-bottom: 40px;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.6;
+    }
+
+    .subdomain {
+      color: #ffffff;
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    .button-container {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 20px 50px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50px;
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      font-size: 1rem;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 
+        0 10px 30px rgba(255, 255, 255, 0.2),
+        0 0 60px rgba(255, 255, 255, 0.1),
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
+      border-color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .btn:active {
+      transform: translateY(-1px) scale(1.02);
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 40px;
+      }
+
+      p {
+        font-size: 1rem;
+        margin-bottom: 30px;
+      }
+
+      .button-container {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .btn {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating Orbs -->
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+
+  <div class="container">
+    <div id="portfolio-selection">
+      <h1>Select Portfolio</h1>
+      <div class="button-container">
+        <a href="/1" class="btn">Zero's Portfolio</a>
+        <a href="/2" class="btn">Skully's Portfolio</a>
+        <a href="/3" class="btn">Xin's Portfolio</a>
+      </div>
+    </div>
+    <div id="subdomain-error" style="display: none;">
+      <h1>Subdomain Not Found</h1>
+      <p>The subdomain <span class="subdomain" id="subdomain">unknown</span> does not exist. Please check the URL or explore our main site or portfolios below.</p>
+      <div class="button-container">
+        <a href="/" class="btn">Go to Main Site</a>
+        <a href="/portfolios" class="btn">View Portfolios</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Get the current hostname and extract the subdomain
+    const hostname = window.location.hostname;
+    const mainDomain = hostname.split('.').slice(-2).join('.'); // Adjust based on your domain structure (e.g., example.com)
+    const subdomain = hostname.split('.')[0];
+
+    // Valid subdomains for portfolios
+    const validSubdomains = ['1', '2', '3', 'www', '']; // Include '' for root domain and 'www'
+
+    // Elements to toggle
+    const portfolioSection = document.getElementById('portfolio-selection');
+    const errorSection = document.getElementById('subdomain-error');
+    const subdomainElement = document.getElementById('subdomain');
+
+    // Check if the subdomain is valid
+    if (subdomain && !validSubdomains.includes(subdomain)) {
+      // Show error message for invalid subdomain
+      portfolioSection.style.display = 'none';
+      errorSection.style.display = 'block';
+      subdomainElement.textContent = subdomain;
+    } else {
+      // Show portfolio selection for valid or no subdomain
+      portfolioSection.style.display = 'block';
+      errorSection.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
