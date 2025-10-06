@@ -437,28 +437,19 @@
             position: absolute;
             bottom: 2px;
             right: 2px;
-            width: 24px;
-            height: 24px;
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
             border: 3px solid rgba(0, 0, 0, 0.9);
-            background: #747f8d;
             z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .status-indicator.online {
-            background: #43b581;
-        }
-
-        .status-indicator.idle {
-            background: #faa61a;
-        }
-
-        .status-indicator.dnd {
-            background: #f04747;
-        }
-
-        .status-indicator.streaming {
-            background: #593695;
+        .status-indicator svg {
+            width: 100%;
+            height: 100%;
         }
 
         .discord-avatar {
@@ -908,7 +899,7 @@
             <div class="name-display">
                 <span class="name" id="typed-name"></span>
                 <span class="cursor"></span>
-</div>
+            </div>
         </div>
 
         <div class="badges-section" id="badges-section">
@@ -920,7 +911,6 @@
                 </div>
                 <div class="badge custom-badge premium-badge" style="display: none;" id="premium-badge">
                     <img id="Premium Badge" src="https://cdn3.emoji.gg/emojis/819847-diamond.png">
-
                     <div class="badge-tooltip">Premium</div>
                 </div>
             </div>
@@ -999,20 +989,36 @@
             const titleElement = document.getElementById('page-title');
             titleElement.textContent = '@';
             
-            const typeInterval = setInterval(() => {
-                if (index < titleText.length - 1) {
-                    titleElement.textContent = titleText.substring(0, index + 2);
+            let isDeleting = false;
+            let currentText = '@';
+            
+            function type() {
+                if (!isDeleting && index < titleText.length - 1) {
                     index++;
-                } else {
-                    clearInterval(typeInterval);
+                    currentText = titleText.substring(0, index + 2);
+                    titleElement.textContent = currentText;
+                    setTimeout(type, 150);
+                } else if (!isDeleting && index >= titleText.length - 1) {
+                    isDeleting = true;
+                    setTimeout(type, 1000);
+                } else if (isDeleting && currentText.length > 1) {
+                    currentText = currentText.slice(0, -1);
+                    titleElement.textContent = currentText;
+                    setTimeout(type, 100);
+                } else if (isDeleting && currentText.length === 1) {
+                    isDeleting = false;
+                    index = 0;
+                    setTimeout(type, 500);
                 }
-            }, 150);
+            }
+            
+            type();
         }
 
-        // Start title typewriter and repeat every 5 seconds
+        // Start title typewriter and repeat every 8 seconds
         setTimeout(() => {
             typewriteTitle();
-            titleTypewriterInterval = setInterval(typewriteTitle, 5000);
+            titleTypewriterInterval = setInterval(typewriteTitle, 8000);
         }, 1000);
 
         // Name typewriter function
@@ -1020,16 +1026,27 @@
             const text = 'skully';
             let index = 0;
             const typedName = document.getElementById('typed-name');
-            typedName.textContent = '';
+            let isDeleting = false;
             
-            const typeInterval = setInterval(() => {
-                if (index < text.length) {
-                    typedName.textContent += text.charAt(index);
+            function type() {
+                if (!isDeleting && index < text.length) {
+                    typedName.textContent = text.substring(0, index + 1);
                     index++;
-                } else {
-                    clearInterval(typeInterval);
+                    setTimeout(type, 150);
+                } else if (!isDeleting && index >= text.length) {
+                    isDeleting = true;
+                    setTimeout(type, 1000);
+                } else if (isDeleting && index > 0) {
+                    index--;
+                    typedName.textContent = text.substring(0, index);
+                    setTimeout(type, 100);
+                } else if (isDeleting && index === 0) {
+                    isDeleting = false;
+                    setTimeout(type, 500);
                 }
-            }, 150);
+            }
+            
+            type();
         }
 
         // Snowflake cursor trail
@@ -1115,12 +1132,8 @@
             links.classList.add('enter');
             musicPlayer.classList.add('enter');
 
-            const text = 'skully';
-            let index = 0;
-            const typedName = document.getElementById('typed-name');
-            
             typewriteName();
-            nameTypewriterInterval = setInterval(typewriteName, 6000);
+            nameTypewriterInterval = setInterval(typewriteName, 9000);
 
             const style = getComputedStyle(document.documentElement);
             const descriptionText = style.getPropertyValue('--description').trim().replace(/'/g, '');
@@ -1149,11 +1162,11 @@
         const discordID = '1410350406214615150';
         
         const statusIcons = {
-            online: `<svg width="18" height="18" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" fill="#43b581"/></svg>`,
-            idle: `<svg width="18" height="18" viewBox="0 0 16 16"><path fill="#faa61a" d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm0 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/><circle cx="8" cy="8" r="3" fill="#fff"/></svg>`,
-            dnd: `<svg width="18" height="18" viewBox="0 0 16 16"><path fill="#f04747" d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0z"/><rect x="3" y="7" width="10" height="2" fill="#fff" rx="1"/></svg>`,
-            offline: `<svg width="18" height="18" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" fill="none" stroke="#747f8d" stroke-width="2"/><circle cx="8" cy="8" r="3" fill="#747f8d"/></svg>`,
-            streaming: `<svg width="18" height="18" viewBox="0 0 16 16"><path fill="#593695" d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0z"/><path fill="rgba(255,255,255,0.8)" d="M6 4.5v7l5-3.5-5-3.5z"/></svg>`
+            online: `<svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#23a559"/><circle cx="8" cy="8" r="4" fill="rgba(0,0,0,0.9)"/></svg>`,
+            idle: `<svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#f0b232"/><path d="M12.8 8C12.8 10.6509 10.6509 12.8 8 12.8C5.34903 12.8 3.2 10.6509 3.2 8C3.2 5.34903 5.34903 3.2 8 3.2C10.6509 3.2 12.8 5.34903 12.8 8Z" fill="rgba(0,0,0,0.9)"/></svg>`,
+            dnd: `<svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#f23f43"/><rect x="4" y="7" width="8" height="2" rx="1" fill="rgba(0,0,0,0.9)"/></svg>`,
+            offline: `<svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#80848e"/><circle cx="8" cy="8" r="4" fill="rgba(0,0,0,0.9)"/></svg>`,
+            streaming: `<svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#593695"/><polygon points="6,4 6,12 12,8" fill="rgba(0,0,0,0.9)"/></svg>`
         };
         
         async function updateDiscordStatus() {
@@ -1167,8 +1180,15 @@
                     
                     // Update status indicator
                     const statusIndicator = document.getElementById('status-indicator');
-                    const discordStatus = statusData.discord_status || 'offline';
-                    statusIndicator.className = 'status-indicator ' + discordStatus;
+                    let discordStatus = statusData.discord_status || 'offline';
+                    
+                    // Check if user is streaming
+                    const isStreaming = activities.some(activity => activity.type === 1);
+                    if (isStreaming) {
+                        discordStatus = 'streaming';
+                    }
+                    
+                    statusIndicator.innerHTML = statusIcons[discordStatus] || statusIcons['offline'];
                     
                     const user = statusData.discord_user;
                     if (user) {
