@@ -228,7 +228,7 @@
     const subdomain = hostname.split('.')[0];
 
     // Valid subdomains for portfolios
-    const validSubdomains = ['1', '2', '3'];
+    const validSubdomains = ['1', '2', '3', 'www', '']; // Include '' for root domain and 'www'
 
     // Elements to toggle
     const portfolioSection = document.getElementById('portfolio-selection');
@@ -236,7 +236,7 @@
     const subdomainElement = document.getElementById('subdomain');
 
     // Check if the subdomain is valid
-    if (subdomain && subdomain !== 'www' && !validSubdomains.includes(subdomain)) {
+    if (subdomain && !validSubdomains.includes(subdomain)) {
       // Show error message for invalid subdomain
       portfolioSection.style.display = 'none';
       errorSection.style.display = 'block';
