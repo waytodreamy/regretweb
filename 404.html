@@ -207,6 +207,7 @@
     <p>The subdomain <span class="subdomain" id="subdomain">unknown</span> does not exist. Please check the URL or explore our main site or portfolios below.</p>
     <div class="button-container">
       <a href="/" class="btn">Go to Main Site</a>
+      <a href="/portfolios" class="btn">View Portfolios</a>
     </div>
   </div>
 
@@ -215,12 +216,14 @@
     const hostname = window.location.hostname;
     const parts = hostname.split('.');
     const mainDomain = parts.slice(-2).join('.'); // e.g., 'example.com'
-    const subdomain = parts.slice(0, -2).join('.'); // Full subdomain part
+    const subdomain = parts.slice(0, -2).join('.') || parts[0]; // Full subdomain or first part if no deep subdomain
 
     // Update the subdomain text in the message
     const subdomainElement = document.getElementById('subdomain');
     if (subdomain && subdomain !== 'www') {
       subdomainElement.textContent = subdomain;
+    } else if (subdomain === 'www') {
+      subdomainElement.textContent = 'www';
     } else {
       subdomainElement.textContent = 'unknown';
     }
