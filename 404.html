@@ -213,12 +213,13 @@
   <script>
     // Get the current hostname and extract the subdomain
     const hostname = window.location.hostname;
-    const mainDomain = hostname.split('.').slice(-2).join('.'); // Adjust based on your domain structure (e.g., example.com)
-    const subdomain = hostname.split('.')[0];
+    const parts = hostname.split('.');
+    const mainDomain = parts.slice(-2).join('.'); // e.g., 'example.com'
+    const subdomain = parts.slice(0, -2).join('.'); // Full subdomain part
 
     // Update the subdomain text in the message
     const subdomainElement = document.getElementById('subdomain');
-    if (subdomain && subdomain !== 'www' && subdomain !== mainDomain) {
+    if (subdomain && subdomain !== 'www') {
       subdomainElement.textContent = subdomain;
     } else {
       subdomainElement.textContent = 'unknown';
