@@ -558,6 +558,57 @@
       font-weight: 500;
     }
 
+    /* Music Player Styles */
+    #music-player {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      width: 300px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      padding: 15px;
+      z-index: 1001;
+      box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+      color: var(--white);
+      font-size: 0.9rem;
+    }
+
+    #current-song {
+      text-align: center;
+      margin-bottom: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    #music-progress-bar {
+      width: 100%;
+      margin-bottom: 10px;
+      accent-color: var(--white);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    #music-player .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #music-player button {
+      background: transparent;
+      border: none;
+      color: var(--white);
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    #music-player button:hover {
+      transform: scale(1.1);
+    }
+
     /* Responsive Design */
     @media (max-width: 768px) {
       nav {
@@ -582,6 +633,12 @@
 
       .skills-container {
         grid-template-columns: repeat(2, 1fr);
+      }
+
+      #music-player {
+        width: calc(100% - 40px);
+        left: 20px;
+        bottom: 10px;
       }
     }
   </style>
@@ -654,7 +711,7 @@
       </p>
     </section>
 
-<!-- Skills Section -->
+    <!-- Skills Section -->
     <section id="skills" class="scroll-animate">
       <h2>Technical Skills</h2>
       <div class="skills-container">
@@ -716,6 +773,20 @@
         <a href="https://github.com/waytodreamy" class="btn">GitHub</a>
       </div>
     </section>
+  </main>
+
+  <!-- Music Player -->
+  <div id="music-player">
+    <div id="current-song">No song playing</div>
+    <input type="range" id="music-progress-bar" min="0" max="100" value="0">
+    <div class="controls">
+      <button id="prev-btn">&#9664;&#9664;</button>
+      <button id="play-pause-btn">&#9654;</button>
+      <button id="next-btn">&#9658;&#9658;</button>
+    </div>
+  </div>
+
+  <audio id="audio" loop></audio>
 
   <script>
     // Loading animation
@@ -810,6 +881,85 @@
           });
         }
       });
+    });
+
+    // Music Player Logic
+    const audio = document.getElementById('audio');
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const currentSong = document.getElementById('current-song');
+    const musicProgressBar = document.getElementById('music-progress-bar');
+
+    // Add your song URLs and titles here (replace with actual MP3 URLs)
+    const playlist = [
+      { title: 'Blijf Soldaat', src: 'https://www.regret.best/media/test.mp3' }
+      // Add more songs as needed
+    ];
+
+    let currentIndex = 0;
+    let isPlaying = false;
+
+    function loadSong(index) {
+      if (playlist.length === 0) return;
+      audio.src = playlist[index].src;
+      currentSong.textContent = playlist[index].title;
+      audio.load();
+      if (isPlaying) audio.play();
+      musicProgressBar.value = 0;
+    }
+
+    function playPause() {
+      if (isPlaying) {
+        audio.pause();
+        playPauseBtn.innerHTML = '&#9654;'; // Play icon
+      } else {
+        audio.play();
+        playPauseBtn.innerHTML = '&#10074;&#10074;'; // Pause icon
+      }
+      isPlaying = !isPlaying;
+    }
+
+    function nextSong() {
+      currentIndex = (currentIndex + 1) % playlist.length;
+      loadSong(currentIndex);
+    }
+
+    function prevSong() {
+      currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+      loadSong(currentIndex);
+    }
+
+    // Update progress bar
+    audio.addEventListener('timeupdate', () => {
+      if (audio.duration) {
+        musicProgressBar.value = (audio.currentTime / audio.duration) * 100;
+      }
+    });
+
+    // Seek functionality
+    musicProgressBar.addEventListener('input', () => {
+      if (audio.duration) {
+        audio.currentTime = (musicProgressBar.value / 100) * audio.duration;
+      }
+    });
+
+    // Event listeners
+    playPauseBtn.addEventListener('click', playPause);
+    nextBtn.addEventListener('click', nextSong);
+    prevBtn.addEventListener('click', prevSong);
+    audio.addEventListener('ended', nextSong);
+
+    // Autoplay the first song after loading (note: browsers may block autoplay without user interaction)
+    document.addEventListener('DOMContentLoaded', () => {
+      if (playlist.length > 0) {
+        loadSong(0);
+        audio.play().catch(() => {
+          console.log('Autoplay blocked. User interaction required.');
+        });
+        isPlaying = true;
+        playPauseBtn.innerHTML = '&#10074;&#10074;';
+      }
     });
   </script>
 </body>
