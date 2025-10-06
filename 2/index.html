@@ -137,11 +137,19 @@
             font-family: 'Inter', 'DejaVu Sans', Arial, sans-serif;
             font-size: 2rem;
             color: #ffffff;
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.8),
+                0 0 20px rgba(255, 255, 255, 0.6),
+                0 0 30px rgba(255, 255, 255, 0.4);
             letter-spacing: 0.05em;
             transition: all 0.3s ease;
         }
 
         .entry-text:hover {
+            text-shadow: 
+                0 0 15px rgba(255, 255, 255, 1),
+                0 0 30px rgba(255, 255, 255, 0.8),
+                0 0 45px rgba(255, 255, 255, 0.6);
             transform: scale(1.05);
         }
 
@@ -275,6 +283,11 @@
             font-weight: 700;
             letter-spacing: 0.05em;
             color: #ffffff;
+            text-shadow: 
+                2px 2px 4px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(255, 255, 255, 0.8),
+                0 0 40px rgba(255, 255, 255, 0.6),
+                0 0 60px rgba(255, 255, 255, 0.4);
             display: inline-block;
             position: relative;
         }
@@ -860,6 +873,11 @@
             cursor: pointer;
             box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
         }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+            10%, 90% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
     </style>
 </head>
 <body>
@@ -882,7 +900,7 @@
         </div>
         
         <div class="name-section">
-            <div class="title-label">REGRET.BEST</div>
+            <div class="title-label">IDENTITY</div>
             <div class="name-display">
                 <span class="name" id="typed-name"></span>
                 <span class="cursor"></span>
@@ -966,75 +984,117 @@
     <script>
         let hasEntered = false;
         const snowflakes = ['❄', '❅', '❆'];
-        let nameTypewriterInterval;
-        let titleTypewriterInterval;
+        let titleTimeouts = [];
+        let nameTimeouts = [];
+        let titleActive = false;
+        let nameActive = false;
+
+        // Track page visibility
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                // Clear all timeouts
+                titleTimeouts.forEach(t => clearTimeout(t));
+                nameTimeouts.forEach(t => clearTimeout(t));
+                titleTimeouts = [];
+                nameTimeouts = [];
+                titleActive = false;
+                nameActive = false;
+            } else {
+                // Restart animations
+                if (hasEntered) {
+                    startTitleTypewriter();
+                    startNameTypewriter();
+                } else {
+                    startTitleTypewriter();
+                }
+            }
+        });
+
+        function startTitleTypewriter() {
+            if (titleActive) return;
+            titleActive = true;
+            typewriteTitle();
+        }
+
+        function startNameTypewriter() {
+            if (nameActive) return;
+            nameActive = true;
+            typewriteName();
+        }
 
         // Page title typewriter
         function typewriteTitle() {
+            if (!titleActive) return;
+            
             const titleText = '@skully';
-            let index = 0;
             const titleElement = document.getElementById('page-title');
+            let index = 0;
+            let isDeleting = false;
             titleElement.textContent = '@';
             
-            let isDeleting = false;
-            let currentText = '@';
-            
             function type() {
+                if (!titleActive) return;
+                
                 if (!isDeleting && index < titleText.length - 1) {
                     index++;
-                    currentText = titleText.substring(0, index + 2);
-                    titleElement.textContent = currentText;
-                    setTimeout(type, 150);
+                    titleElement.textContent = titleText.substring(0, index + 2);
+                    titleTimeouts.push(setTimeout(type, 150));
                 } else if (!isDeleting && index >= titleText.length - 1) {
                     isDeleting = true;
-                    setTimeout(type, 1000);
-                } else if (isDeleting && currentText.length > 1) {
-                    currentText = currentText.slice(0, -1);
-                    titleElement.textContent = currentText;
-                    setTimeout(type, 100);
-                } else if (isDeleting && currentText.length === 1) {
-                    isDeleting = false;
-                    index = 0;
-                    setTimeout(type, 500);
+                    titleTimeouts.push(setTimeout(type, 1000));
+                } else if (isDeleting && titleElement.textContent.length > 1) {
+                    titleElement.textContent = titleElement.textContent.slice(0, -1);
+                    titleTimeouts.push(setTimeout(type, 100));
+                } else if (isDeleting && titleElement.textContent.length === 1) {
+                    titleTimeouts.push(setTimeout(() => {
+                        typewriteTitle(); // Restart the cycle
+                    }, 500));
+                    return;
                 }
             }
             
             type();
         }
 
-        // Start title typewriter and repeat every 8 seconds
-        setTimeout(() => {
-            typewriteTitle();
-            titleTypewriterInterval = setInterval(typewriteTitle, 8000);
-        }, 1000);
-
-        // Name typewriter function
+        // Name typewriter
         function typewriteName() {
+            if (!nameActive) return;
+            
             const text = 'skully';
-            let index = 0;
             const typedName = document.getElementById('typed-name');
+            let index = 0;
             let isDeleting = false;
+            typedName.textContent = '';
             
             function type() {
+                if (!nameActive) return;
+                
                 if (!isDeleting && index < text.length) {
                     typedName.textContent = text.substring(0, index + 1);
                     index++;
-                    setTimeout(type, 150);
+                    nameTimeouts.push(setTimeout(type, 150));
                 } else if (!isDeleting && index >= text.length) {
                     isDeleting = true;
-                    setTimeout(type, 1000);
+                    nameTimeouts.push(setTimeout(type, 1000));
                 } else if (isDeleting && index > 0) {
                     index--;
                     typedName.textContent = text.substring(0, index);
-                    setTimeout(type, 100);
+                    nameTimeouts.push(setTimeout(type, 100));
                 } else if (isDeleting && index === 0) {
-                    isDeleting = false;
-                    setTimeout(type, 500);
+                    nameTimeouts.push(setTimeout(() => {
+                        typewriteName(); // Restart the cycle
+                    }, 500));
+                    return;
                 }
             }
             
             type();
         }
+
+        // Start title typewriter on load
+        setTimeout(() => {
+            startTitleTypewriter();
+        }, 1000);
 
         // Snowflake cursor trail
         document.addEventListener('mousemove', function(e) {
@@ -1119,8 +1179,7 @@
             links.classList.add('enter');
             musicPlayer.classList.add('enter');
 
-            typewriteName();
-            nameTypewriterInterval = setInterval(typewriteName, 9000);
+            startNameTypewriter();
 
             const style = getComputedStyle(document.documentElement);
             const descriptionText = style.getPropertyValue('--description').trim().replace(/'/g, '');
@@ -1448,15 +1507,6 @@
             else if (volume < 0.5) icon = 'fa-volume-down';
             volumeBtn.innerHTML = `<i class="fas ${icon}"></i>`;
         }
-
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fadeInOut {
-                0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-                10%, 90% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 </html>
