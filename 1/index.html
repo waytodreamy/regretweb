@@ -1302,16 +1302,27 @@ async function updateDiscordStatus() {
                         const profileResponse = await fetch(`https://dcdn.dstn.to/profile/${discordID}`);
                         const profileData = await profileResponse.json();
                         
-                        if (profileData.user) {
-                            premiumType = profileData.user.premium_type || null;
-                            
-                            // Check for premium_since in user_profile or premium_guild_since
-                            if (profileData.user_profile && profileData.user_profile.premium_since) {
-                                premiumSince = profileData.user_profile.premium_since;
-                            } else if (profileData.premium_guild_since) {
-                                premiumSince = profileData.premium_guild_since;
-                            }
+                        console.log('DCDN Profile Data:', profileData); // Debug log
+                        
+                        // Try multiple possible locations for premium_type
+                        if (profileData.user && profileData.user.premium_type) {
+                            premiumType = profileData.user.premium_type;
+                        } else if (profileData.premium_type) {
+                            premiumType = profileData.premium_type;
                         }
+                        
+                        // Check for premium_since in multiple locations
+                        if (profileData.user_profile && profileData.user_profile.premium_since) {
+                            premiumSince = profileData.user_profile.premium_since;
+                        } else if (profileData.premium_since) {
+                            premiumSince = profileData.premium_since;
+                        } else if (profileData.premium_guild_since) {
+                            premiumSince = profileData.premium_guild_since;
+                        } else if (profileData.guild_member && profileData.guild_member.premium_since) {
+                            premiumSince = profileData.guild_member.premium_since;
+                        }
+                        
+                        console.log('Premium Type:', premiumType, 'Premium Since:', premiumSince); // Debug log
                     } catch (profileError) {
                         console.error('Error fetching profile from DCDN:', profileError);
                     }
