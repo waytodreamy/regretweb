@@ -1344,8 +1344,12 @@
             };
             
             const badgesContainer = document.getElementById('badges-container');
-            const customBadges = Array.from(badgesContainer.querySelectorAll('.custom-badge'));
             
+            // Remove only Discord badges (not custom badges)
+            const discordBadges = badgesContainer.querySelectorAll('.badge:not(.custom-badge)');
+            discordBadges.forEach(badge => badge.remove());
+            
+            // Now add the Discord badges
             for (const [flag, badge] of Object.entries(badgeMap)) {
                 if (flags & parseInt(flag)) {
                     const badgeEl = document.createElement('div');
