@@ -1,250 +1,509 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Portfolio Selection" />
-  <title>Portfolio Selection</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfolio Selection">
+    <title id="page-title">Portfolio Selection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-blur: 15px;
+            --rain-intensity: 0.4;
+            --background-image: url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1920');
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #000000;
-      color: #ffffff;
-      min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Inter', 'DejaVu Sans', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
 
-    /* Animated background grid */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-      background-size: 50px 50px;
-      animation: gridMove 20s linear infinite;
-      z-index: 0;
-    }
+        .cursor-snowflake {
+            position: fixed;
+            pointer-events: none;
+            font-size: 20px;
+            z-index: 99999;
+            user-select: none;
+            animation: snowfall linear forwards;
+        }
 
-    @keyframes gridMove {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(50px, 50px); }
-    }
+        @keyframes snowfall {
+            0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(100vh) rotate(360deg); }
+        }
 
-    /* Floating orbs */
-    .orb {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(100px);
-      opacity: 0.15;
-      animation: float 15s infinite ease-in-out;
-      z-index: 0;
-    }
+        .bg-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--background-image) center/cover fixed;
+            filter: blur(var(--bg-blur)) grayscale(100%);
+            transform: scale(1.1);
+            z-index: 0;
+        }
 
-    .orb1 {
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.5), transparent);
-      top: -200px;
-      left: -200px;
-      animation-delay: 0s;
-    }
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(20, 20, 20, 0.95));
+            z-index: 1;
+        }
 
-    .orb2 {
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
-      bottom: -100px;
-      right: -100px;
-      animation-delay: 5s;
-    }
+        .rain-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+            opacity: var(--rain-intensity);
+        }
 
-    .orb3 {
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.4), transparent);
-      top: 50%;
-      left: 50%;
-      animation-delay: 10s;
-    }
+        .rain-drop {
+            position: absolute;
+            width: 1px;
+            height: 80px;
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: fall linear infinite;
+        }
 
-    @keyframes float {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(30px, -30px) scale(1.1); }
-      66% { transform: translate(-30px, 30px) scale(0.9); }
-    }
+        @keyframes fall {
+            to { transform: translateY(100vh); }
+        }
 
-    /* Content container */
-    .container {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      max-width: 600px;
-      padding: 20px;
-    }
+        .entry-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
 
-    h1 {
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      font-weight: 700;
-      margin-bottom: 60px;
-      color: #ffffff;
-      text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
-      letter-spacing: 2px;
-    }
+        .entry-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
 
-    p {
-      font-size: 1.2rem;
-      font-weight: 400;
-      margin-bottom: 40px;
-      color: rgba(255, 255, 255, 0.8);
-      line-height: 1.6;
-    }
+        .entry-text-container {
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+        }
 
-    .subdomain {
-      color: #ffffff;
-      font-weight: 600;
-      text-decoration: underline;
-    }
+        .entry-text {
+            font-family: 'Inter', 'DejaVu Sans', Arial, sans-serif;
+            font-size: 2rem;
+            color: #ffffff;
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.8),
+                0 0 20px rgba(255, 255, 255, 0.6),
+                0 0 30px rgba(255, 255, 255, 0.4);
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+        }
 
-    .button-container {
-      display: flex;
-      gap: 30px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+        .entry-text:hover {
+            text-shadow: 
+                0 0 15px rgba(255, 255, 255, 1),
+                0 0 30px rgba(255, 255, 255, 0.8),
+                0 0 45px rgba(255, 255, 255, 0.6);
+            transform: scale(1.05);
+        }
 
-    .btn {
-      display: inline-block;
-      padding: 20px 50px;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 50px;
-      color: #ffffff;
-      text-decoration: none;
-      font-weight: 600;
-      letter-spacing: 1px;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.3s ease;
-      text-transform: uppercase;
-      font-size: 1rem;
-    }
+        .entry-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.5rem;
+            background: #ffffff;
+            margin-left: 3px;
+            animation: blinkCursor 1s step-end infinite;
+            box-shadow: 0 0 5px #ffffff;
+            vertical-align: middle;
+        }
 
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-      transition: left 0.5s ease;
-    }
+        @keyframes blinkCursor {
+            50% { opacity: 0; }
+        }
 
-    .btn:hover::before {
-      left: 100%;
-    }
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px 60px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 
+                0 20px 60px rgba(51, 51, 51, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+            max-width: 650px;
+            overflow: visible;
+            opacity: 0.3;
+            transform: translateY(100px) scale(0.9);
+            transition: transform 0.15s ease-out;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
 
-    .btn:hover {
-      transform: translateY(-3px) scale(1.05);
-      box-shadow: 
-        0 10px 30px rgba(255, 255, 255, 0.2),
-        0 0 60px rgba(255, 255, 255, 0.1),
-        inset 0 0 20px rgba(255, 255, 255, 0.1);
-      border-color: #ffffff;
-      background: rgba(255, 255, 255, 0.1);
-    }
+        .container.enter {
+            animation: slideInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
 
-    .btn:active {
-      transform: translateY(-1px) scale(1.02);
-    }
+        @keyframes slideInUp {
+            0% { opacity: 0; transform: translateY(100px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
 
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 2rem;
-        margin-bottom: 40px;
-      }
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: #ffffff;
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.8),
+                0 0 20px rgba(255, 255, 255, 0.6),
+                0 0 30px rgba(255, 255, 255, 0.4);
+            letter-spacing: 0.05em;
+            opacity: 0;
+            transform: translateY(100px);
+        }
 
-      p {
-        font-size: 1rem;
-        margin-bottom: 30px;
-      }
+        h1.enter {
+            animation: slideInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+        }
 
-      .button-container {
-        flex-direction: column;
-        gap: 20px;
-      }
+        p {
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 40px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            opacity: 0;
+            transform: translateY(100px);
+        }
 
-      .btn {
-        width: 100%;
-        max-width: 300px;
-      }
-    }
-  </style>
+        p.enter {
+            animation: slideInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+        }
+
+        .subdomain {
+            color: #ffffff;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(100px);
+        }
+
+        .button-container.enter {
+            animation: slideInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 20px 50px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 1rem;
+            box-shadow: 
+                0 8px 20px rgba(0, 0, 0, 0.3),
+                inset 0 1px 1px rgba(255, 255, 255, 0.1);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 
+                0 12px 30px rgba(0, 0, 0, 0.4),
+                inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            border-color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 30px;
+            }
+
+            p {
+                font-size: 1rem;
+                margin-bottom: 30px;
+            }
+
+            .container {
+                padding: 30px;
+                max-width: 90%;
+            }
+
+            .button-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                padding: 15px 30px;
+            }
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+            10%, 90% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+    </style>
 </head>
 <body>
-  <!-- Floating Orbs -->
-  <div class="orb orb1"></div>
-  <div class="orb orb2"></div>
-  <div class="orb orb3"></div>
+    <div class="bg-layer"></div>
+    <div class="bg-overlay"></div>
+    <div class="rain-container" id="rain-container"></div>
 
-  <div class="container">
-    <div id="portfolio-selection">
-      <h1>Select Portfolio</h1>
-      <div class="button-container">
-        <a href="/1" class="btn">Zero's Portfolio</a>
-        <a href="/2" class="btn">Skully's Portfolio</a>
-      </div>
+    <div class="entry-screen" id="entry-screen">
+        <div class="entry-text-container" id="entry-btn">
+            <span class="entry-text" id="entry-typed-text"></span>
+            <span class="entry-cursor"></span>
+        </div>
     </div>
-    <div id="subdomain-error" style="display: none;">
-      <h1>Subdomain Not Found</h1>
-      <p>The subdomain <span class="subdomain" id="subdomain">unknown</span> does not exist. Please check the URL or explore our main site or portfolios below.</p>
-      <div class="button-container">
-        <a href="/" class="btn">Go to Main Site</a>
-        <a href="/portfolios" class="btn">View Portfolios</a>
-      </div>
+
+    <div class="container" id="main-container">
+        <div id="portfolio-selection">
+            <h1 id="title">Select Portfolio</h1>
+            <div class="button-container">
+                <a href="/1" class="btn">Zero's Portfolio</a>
+                <a href="/2" class="btn">Skully's Portfolio</a>
+            </div>
+        </div>
+        <div id="subdomain-error" style="display: none;">
+            <h1 id="error-title">Subdomain Not Found</h1>
+            <p id="error-text">The subdomain <span class="subdomain" id="subdomain">unknown</span> does not exist. Please check the URL or explore our main site or portfolios below.</p>
+            <div class="button-container">
+                <a href="/" class="btn">Go to Main Site</a>
+                <a href="/portfolios" class="btn">View Portfolios</a>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <script>
-    // Get the current hostname and extract the subdomain
-    const hostname = window.location.hostname;
-    const mainDomain = hostname.split('.').slice(-2).join('.'); // Adjust based on your domain structure (e.g., example.com)
-    const subdomain = hostname.split('.')[0];
+    <script>
+        let hasEntered = false;
+        const snowflakes = ['❄', '❅', '❆'];
+        let titleTimeouts = [];
+        let titleActive = false;
 
-    // Valid subdomains for portfolios
-    const validSubdomains = ['1', '2', '3', 'www', '']; // Include '' for root domain and 'www'
+        // Track page visibility
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                titleTimeouts.forEach(t => clearTimeout(t));
+                titleTimeouts = [];
+                titleActive = false;
+            } else {
+                if (hasEntered) {
+                    startTitleTypewriter();
+                } else {
+                    startTitleTypewriter();
+                }
+            }
+        });
 
-    // Elements to toggle
-    const portfolioSection = document.getElementById('portfolio-selection');
-    const errorSection = document.getElementById('subdomain-error');
-    const subdomainElement = document.getElementById('subdomain');
+        function startTitleTypewriter() {
+            if (titleActive) return;
+            titleActive = true;
+            typewriteTitle();
+        }
 
-    // Check if the subdomain is valid
-    if (subdomain && !validSubdomains.includes(subdomain)) {
-      // Show error message for invalid subdomain
-      portfolioSection.style.display = 'none';
-      errorSection.style.display = 'block';
-      subdomainElement.textContent = subdomain;
-    } else {
-      // Show portfolio selection for valid or no subdomain
-      portfolioSection.style.display = 'block';
-      errorSection.style.display = 'none';
-    }
-  </script>
+        // Page title typewriter
+        function typewriteTitle() {
+            if (!titleActive) return;
+            const titleText = 'Portfolio Selection';
+            const titleElement = document.getElementById('page-title');
+            let index = 0;
+            let isDeleting = false;
+            titleElement.textContent = '';
+            
+            function type() {
+                if (!titleActive) return;
+                
+                if (!isDeleting && index < titleText.length) {
+                    index++;
+                    titleElement.textContent = titleText.substring(0, index);
+                    titleTimeouts.push(setTimeout(type, 150));
+                } else if (!isDeleting && index >= titleText.length) {
+                    isDeleting = true;
+                    titleTimeouts.push(setTimeout(type, 1000));
+                } else if (isDeleting && titleElement.textContent.length > 0) {
+                    titleElement.textContent = titleElement.textContent.slice(0, -1);
+                    titleTimeouts.push(setTimeout(type, 100));
+                } else if (isDeleting && titleElement.textContent.length === 0) {
+                    titleTimeouts.push(setTimeout(() => {
+                        typewriteTitle();
+                    }, 500));
+                    return;
+                }
+            }
+            
+            type();
+        }
+
+        // Snowflake cursor trail
+        document.addEventListener('mousemove', function(e) {
+            if (!hasEntered) return;
+            
+            const snowflake = document.createElement('div');
+            snowflake.className = 'cursor-snowflake';
+            snowflake.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+            snowflake.style.left = e.pageX + 'px';
+            snowflake.style.top = e.pageY + 'px';
+            
+            const duration = Math.random() * 2 + 2;
+            const drift = (Math.random() - 0.5) * 100;
+            
+            snowflake.style.animation = `snowfall ${duration}s linear forwards`;
+            snowflake.style.setProperty('--drift', drift + 'px');
+            
+            document.body.appendChild(snowflake);
+            
+            setTimeout(() => {
+                snowflake.remove();
+            }, duration * 1000);
+        });
+
+        function createRain() {
+            const rainContainer = document.getElementById('rain-container');
+            for (let i = 0; i < 50; i++) {
+                const drop = document.createElement('div');
+                drop.className = 'rain-drop';
+                drop.style.left = Math.random() * 100 + '%';
+                drop.style.animationDuration = (Math.random() * 1 + 0.5) + 's';
+                drop.style.animationDelay = Math.random() * 2 + 's';
+                rainContainer.appendChild(drop);
+            }
+        }
+        createRain();
+
+        const entryText = 'click here to enter';
+        let entryIndex = 0;
+        const entryTypedText = document.getElementById('entry-typed-text');
+        
+        function entryTypeWriter() {
+            if (entryIndex < entryText.length) {
+                entryTypedText.textContent += entryText.charAt(entryIndex);
+                entryIndex++;
+                setTimeout(entryTypeWriter, 100);
+            }
+        }
+        
+        setTimeout(entryTypeWriter, 500);
+
+        document.getElementById('entry-btn').addEventListener('click', function() {
+            if (hasEntered) return;
+            hasEntered = true;
+            
+            const entryScreen = document.getElementById('entry-screen');
+            entryScreen.classList.add('hidden');
+            
+            setTimeout(() => {
+                startMainContent();
+            }, 800);
+        });
+
+        function startMainContent() {
+            const container = document.getElementById('main-container');
+            const title = document.getElementById('title');
+            const errorTitle = document.getElementById('error-title');
+            const errorText = document.getElementById('error-text');
+            const buttonContainers = document.querySelectorAll('.button-container');
+
+            container.classList.add('enter');
+            if (title) title.classList.add('enter');
+            if (errorTitle) errorTitle.classList.add('enter');
+            if (errorText) errorText.classList.add('enter');
+            buttonContainers.forEach(btn => btn.classList.add('enter'));
+
+            startTitleTypewriter();
+
+            // Subdomain logic
+            const hostname = window.location.hostname;
+            const mainDomain = hostname.split('.').slice(-2).join('.');
+            const subdomain = hostname.split('.')[0];
+            const validSubdomains = ['1', '2', '3', 'www', ''];
+            const portfolioSection = document.getElementById('portfolio-selection');
+            const errorSection = document.getElementById('subdomain-error');
+            const subdomainElement = document.getElementById('subdomain');
+
+            if (subdomain && !validSubdomains.includes(subdomain)) {
+                portfolioSection.style.display = 'none';
+                errorSection.style.display = 'block';
+                subdomainElement.textContent = subdomain;
+            } else {
+                portfolioSection.style.display = 'block';
+                errorSection.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>
