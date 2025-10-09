@@ -1196,7 +1196,7 @@
             streaming: `<svg width="20" height="20" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#593695"/><polygon points="6,4 6,12 12,8" fill="rgba(0,0,0,0.9)"/></svg>`
         };
         
-        async function updateDiscordStatus() {
+async function updateDiscordStatus() {
             try {
                 const response = await fetch(`https://api.lanyard.rest/v1/users/${discordID}`);
                 const data = await response.json();
@@ -1294,8 +1294,30 @@
                         activitiesSection.style.display = 'none';
                     }
                     
+                    // Fetch premium info from DCDN
+                    let premiumType = null;
+                    let premiumSince = null;
+                    
+                    try {
+                        const profileResponse = await fetch(`https://dcdn.dstn.to/profile/${discordID}`);
+                        const profileData = await profileResponse.json();
+                        
+                        if (profileData.user) {
+                            premiumType = profileData.user.premium_type || null;
+                            
+                            // Check for premium_since in user_profile or premium_guild_since
+                            if (profileData.user_profile && profileData.user_profile.premium_since) {
+                                premiumSince = profileData.user_profile.premium_since;
+                            } else if (profileData.premium_guild_since) {
+                                premiumSince = profileData.premium_guild_since;
+                            }
+                        }
+                    } catch (profileError) {
+                        console.error('Error fetching profile from DCDN:', profileError);
+                    }
+                    
                     if (statusData.discord_user && statusData.discord_user.public_flags) {
-                        loadBadges(statusData.discord_user.public_flags);
+                        loadBadges(statusData.discord_user.public_flags, premiumType, premiumSince);
                     }
                     
                     if (statusData.discord_user && statusData.discord_user.avatar_decoration_data) {
