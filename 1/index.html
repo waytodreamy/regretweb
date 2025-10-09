@@ -1311,7 +1311,7 @@ async function updateDiscordStatus() {
                             premiumType = profileData.premium_type;
                         }
                         
-                        // Check for premium_since in multiple locations
+                        // Check for premium_since (boost date) in multiple locations
                         if (profileData.user_profile && profileData.user_profile.premium_since) {
                             premiumSince = profileData.user_profile.premium_since;
                         } else if (profileData.premium_since) {
@@ -1322,6 +1322,11 @@ async function updateDiscordStatus() {
                             premiumSince = profileData.guild_member.premium_since;
                         }
                         
+                        // Also check for guild-specific boost data
+                        if (!premiumSince && profileData.guild_member_profile) {
+                            premiumSince = profileData.guild_member_profile.premium_since;
+                        }
+                        
                         console.log('Premium Type:', premiumType, 'Premium Since:', premiumSince); // Debug log
                     } catch (profileError) {
                         console.error('Error fetching profile from DCDN:', profileError);
@@ -1329,6 +1334,9 @@ async function updateDiscordStatus() {
                     
                     if (statusData.discord_user && statusData.discord_user.public_flags) {
                         loadBadges(statusData.discord_user.public_flags, premiumType, premiumSince);
+                    } else {
+                        // Even if no public flags, still load premium/boost badges
+                        loadBadges(0, premiumType, premiumSince);
                     }
                     
                     if (statusData.discord_user && statusData.discord_user.avatar_decoration_data) {
