@@ -1310,7 +1310,7 @@
             }
         }
         
-        function loadBadges(flags) {
+function loadBadges(flags, premiumType, premiumSince) {
             const badgeMap = {
                 1: { name: 'Staff', url: 'https://cdn.discordapp.com/badge-icons/5e74e9b61934fc1f67c65515d1f7e60d.png' },
                 2: { name: 'Partner', url: 'https://cdn.discordapp.com/badge-icons/3f9748e53446a137a052f3454e2de41e.png' },
@@ -1326,13 +1326,66 @@
                 4194304: { name: 'Active Developer', url: 'https://cdn.discordapp.com/badge-icons/6bdc42827a38498929a4920da12695d9.png' }
             };
             
+            // Premium type badges (Nitro)
+            const premiumBadges = {
+                1: { name: 'Nitro Classic', url: 'https://cdn.discordapp.com/badge-icons/2ba85e8026a8614b640c2837bcdfe21b.png' },
+                2: { name: 'Nitro', url: 'https://cdn.discordapp.com/badge-icons/2ba85e8026a8614b640c2837bcdfe21b.png' },
+                3: { name: 'Nitro Basic', url: 'https://cdn.discordapp.com/badge-icons/2ba85e8026a8614b640c2837bcdfe21b.png' }
+            };
+            
             const badgesContainer = document.getElementById('badges-container');
             
             // Remove only Discord badges (not custom badges)
             const discordBadges = badgesContainer.querySelectorAll('.badge:not(.custom-badge)');
             discordBadges.forEach(badge => badge.remove());
             
-            // Now add the Discord badges
+            // Add premium badges first (Nitro)
+            if (premiumType && premiumBadges[premiumType]) {
+                const badge = premiumBadges[premiumType];
+                const badgeEl = document.createElement('div');
+                badgeEl.className = 'badge';
+                badgeEl.innerHTML = `
+                    <img src="${badge.url}" alt="${badge.name}">
+                    <div class="badge-tooltip">${badge.name}</div>
+                `;
+                badgesContainer.appendChild(badgeEl);
+            }
+            
+            // Add Server Boost badge if applicable
+            if (premiumSince) {
+                const monthsBoosting = Math.floor((Date.now() - new Date(premiumSince).getTime()) / (1000 * 60 * 60 * 24 * 30));
+                let boostBadge = { name: 'Server Booster', url: 'https://cdn.discordapp.com/badge-icons/51040c70d4f20a921ad6674ff86fc95c.png' };
+                
+                if (monthsBoosting >= 24) {
+                    boostBadge = { name: 'Server Booster (24+ months)', url: 'https://cdn.discordapp.com/badge-icons/72bed924410c304dbe3d00a6e593ff59.png' };
+                } else if (monthsBoosting >= 18) {
+                    boostBadge = { name: 'Server Booster (18+ months)', url: 'https://cdn.discordapp.com/badge-icons/64ae1208b6afa5918c90f38cb8f8e6f3.png' };
+                } else if (monthsBoosting >= 15) {
+                    boostBadge = { name: 'Server Booster (15+ months)', url: 'https://cdn.discordapp.com/badge-icons/4a2618502278ed592b91c8563734dcdb.png' };
+                } else if (monthsBoosting >= 12) {
+                    boostBadge = { name: 'Server Booster (12+ months)', url: 'https://cdn.discordapp.com/badge-icons/65924b96e0b4e76eee720cde3ced0aae.png' };
+                } else if (monthsBoosting >= 9) {
+                    boostBadge = { name: 'Server Booster (9+ months)', url: 'https://cdn.discordapp.com/badge-icons/7142225d31238f6387d9f09efaa02759.png' };
+                } else if (monthsBoosting >= 6) {
+                    boostBadge = { name: 'Server Booster (6+ months)', url: 'https://cdn.discordapp.com/badge-icons/6bbb4b3c1f5a33e0ea9f55163aaa96bc.png' };
+                } else if (monthsBoosting >= 3) {
+                    boostBadge = { name: 'Server Booster (3+ months)', url: 'https://cdn.discordapp.com/badge-icons/386884eeaf7e6d4144c72b435dc1c91a.png' };
+                } else if (monthsBoosting >= 2) {
+                    boostBadge = { name: 'Server Booster (2+ months)', url: 'https://cdn.discordapp.com/badge-icons/0e4679965020e2530e8dc17c74e157f4.png' };
+                } else if (monthsBoosting >= 1) {
+                    boostBadge = { name: 'Server Booster (1+ month)', url: 'https://cdn.discordapp.com/badge-icons/3d5980774df6dd1c746b752e59bc6b2c.png' };
+                }
+                
+                const badgeEl = document.createElement('div');
+                badgeEl.className = 'badge';
+                badgeEl.innerHTML = `
+                    <img src="${boostBadge.url}" alt="${boostBadge.name}">
+                    <div class="badge-tooltip">${boostBadge.name}</div>
+                `;
+                badgesContainer.appendChild(badgeEl);
+            }
+            
+            // Now add the public flag badges
             for (const [flag, badge] of Object.entries(badgeMap)) {
                 if (flags & parseInt(flag)) {
                     const badgeEl = document.createElement('div');
